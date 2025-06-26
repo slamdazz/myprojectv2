@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      // Используем обновленную функцию из lib/supabase.ts
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -116,7 +116,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       if (error) throw error;
       
       if (data.user) {
-        // Ждем создания профиля через триггер в базе данных
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         const { data: profileData, error: profileError } = await getUserProfile(data.user.id);

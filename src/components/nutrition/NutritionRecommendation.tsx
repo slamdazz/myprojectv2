@@ -19,7 +19,6 @@ interface Recommendation {
   reason: string;
 }
 
-// Небольшая база данных продуктов для рекомендаций
 const foodDatabase = [
   { name: 'Куриная грудка', calories: 165, protein: 31, carbs: 0, fats: 3.6, category: 'protein', tags: ['низкокалорийное', 'высокобелковое'] },
   { name: 'Лосось', calories: 206, protein: 22, carbs: 0, fats: 13, category: 'protein', tags: ['омега-3', 'белок'] },
@@ -45,19 +44,17 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
   const [modelLoaded, setModelLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  // Симуляция загрузки модели TensorFlow
   useEffect(() => {
     async function loadModel() {
       try {
         setIsLoading(true);
         
-        // Имитация загрузки модели (в реальном приложении здесь был бы код загрузки модели)
+    
         await tf.ready();
         
-        // Просто для демонстрации - создаем простой тензор
         const demoTensor = tf.tensor2d([[1, 2], [3, 4]]);
         console.log('TensorFlow готов:', demoTensor.shape);
-        demoTensor.dispose(); // Освобождаем память
+        demoTensor.dispose();
         
         setModelLoaded(true);
       } catch (err) {
@@ -71,27 +68,25 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
     loadModel();
   }, []);
   
-  // Генерация персонализированных рекомендаций
+
   useEffect(() => {
     if (!user || !modelLoaded) return;
     
     generateRecommendations();
   }, [user, modelLoaded]);
   
-  // Функция для генерации рекомендаций на основе профиля пользователя
   const generateRecommendations = () => {
     try {
       setIsLoading(true);
       
-      // В реальном приложении здесь были бы вызовы модели TensorFlow
-      // Мы имитируем рекомендации на основе цели пользователя
+     
       const goal = user?.goal || 'overall_health';
       
       let selectedFoods: Recommendation[] = [];
       
       switch (goal) {
         case 'weight_loss':
-          // Для похудения рекомендуем низкокалорийные продукты с высоким содержанием белка
+       
           selectedFoods = [
             {
               foodName: 'Куриная грудка',
@@ -124,7 +119,7 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
           break;
           
         case 'muscle_gain':
-          // Для набора мышечной массы рекомендуем продукты с высоким содержанием белка и калорий
+     
           selectedFoods = [
             {
               foodName: 'Лосось',
@@ -157,7 +152,7 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
           break;
           
         case 'endurance':
-          // Для выносливости рекомендуем углеводы и продукты с высоким содержанием энергии
+        
           selectedFoods = [
             {
               foodName: 'Бананы',
@@ -190,7 +185,7 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
           break;
           
         case 'flexibility':
-          // Для гибкости рекомендуем продукты с противовоспалительными свойствами
+   
           selectedFoods = [
             {
               foodName: 'Авокадо',
@@ -222,8 +217,7 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
           ];
           break;
           
-        default: // overall_health
-          // Для общего здоровья рекомендуем сбалансированную диету
+        default: 
           selectedFoods = [
             {
               foodName: 'Шпинат',
@@ -264,7 +258,8 @@ export const NutritionRecommendation: React.FC<NutritionRecommendationProps> = (
     }
   };
   
-  // Функция для получения цвета категории продукта
+
+  
   const getCategoryColor = (category: string): string => {
     switch (category) {
       case 'protein': return 'bg-blue-50 text-blue-800';

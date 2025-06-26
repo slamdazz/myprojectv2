@@ -19,7 +19,7 @@ export interface Course {
   description: string;
   image_url: string;
   level: 'beginner' | 'intermediate' | 'advanced';
-  duration: number; // в минутах
+  duration: number; 
   is_active?: boolean;
   created_at: string;
   updated_at?: string;
@@ -31,8 +31,8 @@ export interface Workout {
   course_id: string;
   title: string;
   description: string;
-  duration: number; // в минутах
-  calories?: number; // калории, сжигаемые за тренировку
+  duration: number; 
+  calories?: number; 
   created_at: string;
   updated_at?: string;
 }
@@ -44,7 +44,7 @@ export interface Exercise {
   description: string;
   sets: number;
   reps: number;
-  rest: number; // в секундах
+  rest: number; 
   image_url?: string;
   video_url?: string;
   order_index: number; 

@@ -16,7 +16,6 @@ import { OnboardingPage } from './pages/OnboardingPage';
 import { useAuthStore } from './store/authStore';
 import { ToastProvider } from './lib/ToastContext';
 
-// Защищенный маршрут для авторизованных пользователей
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
@@ -40,7 +39,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-// Защищенный маршрут для администраторов
+
 interface AdminRouteProps {
   children: React.ReactNode;
 }
@@ -64,7 +63,7 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-// Защищенный маршрут для модераторов и администраторов
+
 interface ModeratorRouteProps {
   children: React.ReactNode;
 }
@@ -96,14 +95,12 @@ function App() {
   }, [initialize]);
   
   useEffect(() => {
-    // Добавляем класс для предотвращения оверскролла на мобильных устройствах
     document.body.classList.add('overflow-hidden');
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
   }, []);
-  
-  // Проверяем, видел ли пользователь онбординг
+
   const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding') === 'true';
   
   if (isLoading) {
@@ -119,10 +116,8 @@ function App() {
     <ToastProvider>
       <Router>
         <Routes>
-          {/* Онбординг */}
           <Route path="/onboarding" element={<OnboardingPage />} />
           
-          {/* Перенаправление на онбординг, если пользователь его не видел */}
           <Route 
             path="/" 
             element={
@@ -132,12 +127,12 @@ function App() {
             } 
           />
           
-          {/* Публичные маршруты */}
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           
-          {/* Защищенные маршруты для авторизованных пользователей */}
+      
           <Route path="/profile" element={
             <ProtectedRoute>
               <ProfilePage />
@@ -164,7 +159,7 @@ function App() {
             </ProtectedRoute>
           } />
           
-          {/* Защищенные маршруты для администраторов */}
+ 
           <Route path="/admin/users" element={
             <AdminRoute>
               <AdminUsersPage />
@@ -176,14 +171,14 @@ function App() {
             </AdminRoute>
           } />
           
-          {/* Защищенные маршруты для модераторов */}
+  
           <Route path="/moderator/chat" element={
             <ModeratorRoute>
               <ChatModerationPage />
             </ModeratorRoute>
           } />
           
-          {/* Перенаправление на главную при неизвестном маршруте */}
+  
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

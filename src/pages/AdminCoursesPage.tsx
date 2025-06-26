@@ -19,7 +19,7 @@ export const AdminCoursesPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  // Проверяем, имеет ли пользователь доступ к этой странице
+
   if (!user || user.role !== 'admin') {
     return <Navigate to="/" />;
   }
@@ -48,18 +48,15 @@ export const AdminCoursesPage = () => {
     fetchCourses();
   }, []);
   
-  // Фильтрация курсов при изменении параметров поиска или фильтров
   useEffect(() => {
     const filtered = courses.filter(course => {
-      // Фильтр по поиску (название или описание)
+  
       const matchesSearch = 
         course.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
         course.description.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // Фильтр по уровню сложности
+ 
       const matchesLevel = filterLevel === '' || course.level === filterLevel;
-      
-      // Фильтр по статусу (все курсы активны в демо)
+
       const matchesStatus = filterStatus === '' || (course.is_active && filterStatus === 'published');
       
       return matchesSearch && matchesLevel && matchesStatus;
@@ -68,13 +65,12 @@ export const AdminCoursesPage = () => {
     setFilteredCourses(filtered);
   }, [courses, searchTerm, filterLevel, filterStatus]);
   
-  // Форматирование даты создания
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU');
   };
-  
-  // Получение названия уровня сложности на русском
+
   const getLevelName = (level: string) => {
     switch (level) {
       case 'beginner':
@@ -87,8 +83,7 @@ export const AdminCoursesPage = () => {
         return 'Неизвестно';
     }
   };
-  
-  // Получение цвета фона для уровня сложности
+
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':

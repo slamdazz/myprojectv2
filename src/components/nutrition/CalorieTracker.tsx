@@ -91,7 +91,6 @@ export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ className = '' }
       
       if (error) throw error;
       
-      // Добавляем новую запись к списку
       if (data) {
         setLogs([...logs, data]);
       }

@@ -15,10 +15,9 @@ export interface ActivityData {
   date: string;
 }
 
-// Получение статистики пользователя
 export async function getUserStats(userId: string): Promise<UserStats> {
   try {
-    // Общее количество завершенных курсов
+    
     const { data: progressData, error: progressError } = await supabase
       .from('user_progress')
       .select('completed, course_id')
@@ -28,7 +27,6 @@ export async function getUserStats(userId: string): Promise<UserStats> {
 
     const totalWorkouts = progressData?.filter(p => p.completed).length || 0;
 
-    // Получаем продолжительности курсов для подсчета времени
     const courseIds = progressData?.map(p => p.course_id) || [];
     let totalTime = 0;
     
@@ -39,7 +37,7 @@ export async function getUserStats(userId: string): Promise<UserStats> {
         .in('id', courseIds);
 
       if (!coursesError && coursesData) {
-        // Подсчитываем общее время на основе завершенных курсов
+     
         progressData?.forEach(progress => {
           if (progress.completed) {
             const course = coursesData.find(c => c.id === progress.course_id);
@@ -51,13 +49,11 @@ export async function getUserStats(userId: string): Promise<UserStats> {
       }
     }
 
-    // Количество завершенных курсов
     const completedCourses = totalWorkouts;
 
-    // Текущая серия (приблизительный расчет на основе последних дней с активностью)
-    const currentStreak = Math.max(1, Math.floor(totalWorkouts / 2)); // Примерная формула
 
-    // Количество достижений
+    const currentStreak = Math.max(1, Math.floor(totalWorkouts / 2)); 
+
     const { data: achievementsData, error: achievementsError } = await supabase
       .from('user_achievements')
       .select('completed')
@@ -66,8 +62,8 @@ export async function getUserStats(userId: string): Promise<UserStats> {
 
     const achievements = achievementsData?.length || 0;
 
-    // Количество активных дней (приблизительный расчет)
-    const activeDays = Math.min(totalWorkouts, 30); // Максимум 30 дней за последний месяц
+ 
+    const activeDays = Math.min(totalWorkouts, 30); 
 
     return {
       totalWorkouts,
@@ -90,15 +86,14 @@ export async function getUserStats(userId: string): Promise<UserStats> {
   }
 }
 
-// Получение активности пользователя за последние 7 дней
+
 export async function getUserActivity(userId: string): Promise<ActivityData[]> {
   try {
-    // Генерируем данные за последние 7 дней
+   
     const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     const today = new Date();
     const activityData: ActivityData[] = [];
 
-    // Получаем данные о завершенных курсах пользователя
     const { data: progressData, error } = await supabase
       .from('user_progress')
       .select(`
@@ -116,19 +111,19 @@ export async function getUserActivity(userId: string): Promise<ActivityData[]> {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       
-      const dayName = days[date.getDay() === 0 ? 6 : date.getDay() - 1]; // Понедельник = 0
+      const dayName = days[date.getDay() === 0 ? 6 : date.getDay() - 1]; 
       
-      // Имитируем активность на основе общего прогресса
+
       let dayMinutes = 0;
       if (progressData && progressData.length > 0) {
-        // Рандомная активность на основе общего прогресса пользователя
+ 
         const totalCompleted = progressData.filter(p => p.completed).length;
         if (totalCompleted > 0) {
-          // Генерируем активность: больше у активных пользователей
+    
           const baseActivity = Math.min(totalCompleted * 10, 60);
           dayMinutes = Math.floor(Math.random() * baseActivity);
           
-          // Некоторые дни без активности
+   
           if (Math.random() < 0.2) dayMinutes = 0;
         }
       }
@@ -144,7 +139,7 @@ export async function getUserActivity(userId: string): Promise<ActivityData[]> {
   } catch (error) {
     console.error('Ошибка при получении активности пользователя:', error);
     
-    // Возвращаем пустые данные в случае ошибки
+
     const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     return days.map((day, index) => ({
       day,
@@ -154,10 +149,9 @@ export async function getUserActivity(userId: string): Promise<ActivityData[]> {
   }
 }
 
-// Получение текущей тренировки пользователя
 export async function getCurrentWorkout(userId: string) {
   try {
-    // Находим незавершенный курс пользователя
+
     const { data: progressData, error: progressError } = await supabase
       .from('user_progress')
       .select(`
@@ -186,7 +180,7 @@ export async function getCurrentWorkout(userId: string) {
       return null;
     }
 
-    // Получаем тренировку для этого курса
+
     const { data: workoutData, error: workoutError } = await supabase
       .from('workouts')
       .select('*')
@@ -197,7 +191,6 @@ export async function getCurrentWorkout(userId: string) {
       return null;
     }
 
-    // Прогресс всегда 0% для незавершенных курсов
     const progress = 0;
 
     return {

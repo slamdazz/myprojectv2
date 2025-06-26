@@ -21,7 +21,6 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user } = useAuthStore();
   
-  // Прокрутка чата вниз при добавлении новых сообщений
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -36,7 +35,6 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
     }
   };
   
-  // Форматирование даты сообщения
   const formatMessageDate = (dateString: string) => {
     const date = new Date(dateString);
     const today = new Date();
@@ -52,7 +50,6 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
     }
   };
   
-  // Проверка, принадлежит ли сообщение текущему пользователю
   const isOwnMessage = (userId: string) => {
     return user?.id === userId;
   };
@@ -114,12 +111,13 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
       <form onSubmit={handleSendMessage} className="p-3 border-t border-gray-200">
         <div className="flex items-center">
           <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Введите сообщение..."
-            className="flex-1 py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-          />
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Введите сообщение..."
+          className="flex-1 py-2 px-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-black placeholder-gray-400 bg-white"
+        />
+
           <Button
             type="submit"
             disabled={!newMessage.trim()}

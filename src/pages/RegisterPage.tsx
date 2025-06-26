@@ -9,7 +9,6 @@ import { WaveBackground } from '../components/ui/WaveBackground';
 export const RegisterPage = () => {
   const { isAuthenticated, isLoading } = useAuthStore();
   
-  // Если пользователь уже авторизован, перенаправляем на главную страницу
   if (isAuthenticated) {
     return <Navigate to="/" />;
   }

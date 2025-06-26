@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Loader2 } from 'lucide-react'; // Добавил Loader2
+import { ArrowRight, ArrowUpRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Layout } from '../components/layout/Layout';
 import { StatsSummary } from '../components/home/StatsSummary';
@@ -36,7 +36,7 @@ export const HomePage = () => {
   
   useEffect(() => {
     if (!isAuthenticated || !user) {
-        setIsLoading(false); // Если нет пользователя, прекращаем загрузку
+        setIsLoading(false); 
         return;
     }
     
@@ -62,7 +62,7 @@ export const HomePage = () => {
         
       } catch (error) {
         console.error('Ошибка при загрузке данных пользователя:', error);
-        // Можно установить состояние ошибки здесь, если нужно отобразить ее пользователю
+  
       } finally {
         setIsLoading(false);
       }
@@ -99,22 +99,22 @@ export const HomePage = () => {
     }
   };
   
-  // Лендинг для неавторизованных пользователей
+
   if (!isAuthenticated) {
     return (
       <Layout fullScreen>
-        <div className="h-full flex flex-col bg-gradient-to-b from-indigo-700 via-purple-700 to-pink-700 text-white"> {/* Изменен градиент для соответствия */}
-          <div className="absolute inset-0 bg-pattern opacity-5"></div> {/* Уменьшил opacity паттерна */}
-          <WaveBackground color="rgba(255,255,255,0.05)" opacity={1} height={40} /> {/* Светлые волны с низкой opacity */}
+        <div className="h-full flex flex-col bg-gradient-to-b from-indigo-700 via-purple-700 to-pink-700 text-white"> 
+          <div className="absolute inset-0 bg-pattern opacity-5"></div> 
+          <WaveBackground color="rgba(255,255,255,0.05)" opacity={1} height={40} /> 
           
           <div className="relative z-10 flex-1 flex flex-col justify-between p-6 sm:p-8">
             <motion.div 
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="mt-10 sm:mt-16 text-center sm:text-left" // Центрирование на мобильных
+              className="mt-10 sm:mt-16 text-center sm:text-left" 
             >
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"> {/* Адаптивный размер шрифта */}
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"> 
                 Измени свою жизнь с помощью тренировок
               </h1>
               <p className="text-lg sm:text-xl text-indigo-100 mb-8 sm:mb-10">
@@ -132,7 +132,7 @@ export const HomePage = () => {
                 <Button 
                   fullWidth 
                   size="lg" 
-                  className="text-base sm:text-lg h-12 sm:h-14 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 shadow-lg" // Добавлены hover и shadow
+                  className="text-base sm:text-lg h-12 sm:h-14 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 shadow-lg" 
                   glassmorphism
                 >
                   Начать бесплатно
@@ -143,7 +143,7 @@ export const HomePage = () => {
                   fullWidth 
                   variant="outline" 
                   size="lg" 
-                  className="text-base sm:text-lg h-12 sm:h-14 text-white border-white/20 hover:bg-white/10 backdrop-blur-sm shadow-lg" // Добавлены hover и shadow
+                  className="text-base sm:text-lg h-12 sm:h-14 text-white border-white/20 hover:bg-white/10 backdrop-blur-sm shadow-lg" 
                   glassmorphism
                 >
                   Войти
@@ -152,8 +152,7 @@ export const HomePage = () => {
             </motion.div>
           </div>
           
-          {/* Блок "Почему ФитнесПро?" */}
-          <div className="relative z-10 bg-black/10 backdrop-blur-lg rounded-t-3xl p-6 sm:p-8 space-y-6 border-t border-white/10"> {/* Увеличил отступы и изменил фон */}
+          <div className="relative z-10 bg-black/10 backdrop-blur-lg rounded-t-3xl p-6 sm:p-8 space-y-6 border-t border-white/10">
             <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4 sm:mb-6 text-center">
               Почему ФитнесПро?
             </h2>
@@ -161,8 +160,8 @@ export const HomePage = () => {
             <motion.div 
               variants={container}
               initial="hidden"
-              whileInView="show" // Анимация при появлении в поле зрения
-              viewport={{ once: true, amount: 0.3 }} // Настройки viewport для анимации
+              whileInView="show" 
+              viewport={{ once: true, amount: 0.3 }} 
               className="space-y-4"
             >
               {[
@@ -189,11 +188,11 @@ export const HomePage = () => {
             </motion.div>
             
             <motion.div 
-              variants={item} // Можно использовать тот же item или создать новый для кнопки
-              initial="hidden" // Если используется whileInView, initial можно не указывать здесь
+              variants={item} 
+              initial="hidden" 
               whileInView="show"
               viewport={{ once: true, amount: 0.3 }}
-              className="mt-6 sm:mt-8" // Увеличен отступ
+              className="mt-6 sm:mt-8" 
             >
               <Link to="/register" className="block">
                 <Button 
@@ -212,13 +211,11 @@ export const HomePage = () => {
     );
   }
   
-  // Дашборд для авторизованных пользователей
+
   return (
     <Layout>
       <div className="flex flex-col min-h-full">
-        {/* Шапка дашборда */}
         <div className="relative overflow-hidden">
-          {/* Используем более насыщенный градиент для дашборда */}
           <div className="bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-700 pt-6 pb-12 sm:pt-8 sm:pb-16">
             <div className="relative z-10 px-4 sm:px-6">
               <motion.div
@@ -229,7 +226,7 @@ export const HomePage = () => {
                 <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
                   Привет, {user?.username}!
                 </h1>
-                <p className="text-indigo-100 text-sm sm:text-base"> {/* Уменьшил шрифт для мобильных */}
+                <p className="text-indigo-100 text-sm sm:text-base"> 
                   Готовы к тренировке сегодня?
                 </p>
               </motion.div>
@@ -247,8 +244,7 @@ export const HomePage = () => {
           </div>
         </div>
         
-        {/* Основной контент дашборда */}
-        <div className="flex-1 bg-gray-100 -mt-8 sm:-mt-10 rounded-t-3xl px-4 sm:px-6 pt-5 sm:pt-6 pb-24"> {/* Увеличены отступы и изменен фон */}
+        <div className="flex-1 bg-gray-100 -mt-8 sm:-mt-10 rounded-t-3xl px-4 sm:px-6 pt-5 sm:pt-6 pb-24"> 
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Loader2 size={32} className="animate-spin text-indigo-500 mb-3" />
@@ -256,29 +252,25 @@ export const HomePage = () => {
             </div>
           ) : (
             <div className="space-y-6 sm:space-y-8">
-              <motion.div variants={item} initial="hidden" animate="show" transition={{delay: 0.1}}>
-                <ActivityGraph 
-                  data={activityData}
-                  title="Ваша активность"
-                  subtitle="За неделю"
-                  activeDay={activityData[activityData.length - 1]?.day}
-                  // Оставляем градиент для графика, он хорошо смотрится на светлом фоне
-                  className="bg-gradient-to-br from-purple-600 to-indigo-700 shadow-lg" 
-                />
-              </motion.div>
-              
-              <motion.div variants={item} initial="hidden" animate="show" transition={{delay: 0.2}}>
-                <div className="flex items-center justify-between mb-2 sm:mb-3">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-                    Текущая тренировка
-                  </h2>
-                </div>
-                <CurrentWorkout workout={currentWorkout} />
-              </motion.div>
+              <motion.div
+  className="mt-6"
+  variants={item}
+  initial="hidden"
+  animate="show"
+  transition={{ delay: 0.2 }}
+>
+  <div className="flex items-center justify-between mb-2 sm:mb-3">
+    <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
+      Текущая тренировка
+    </h2>
+  </div>
+  <CurrentWorkout workout={currentWorkout} />
+</motion.div>
+
 
               <motion.div
                 variants={item} initial="hidden" animate="show" transition={{delay: 0.3}}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" // Для больших экранов можно в 2 колонки
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" 
               >
                 <CalorieTracker />
                 <NutritionRecommendation />
@@ -302,9 +294,9 @@ export const HomePage = () => {
                       return (
                         <Link to={`/courses/${course.id}`} key={course.id} className="block group">
                           <motion.div 
-                            initial={{ opacity: 0, y: 15 }} // Уменьшил y
+                            initial={{ opacity: 0, y: 15 }} 
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 + index * 0.05 }} // Уменьшил шаг задержки
+                            transition={{ delay: 0.1 + index * 0.05 }} 
                           >
                             <Card className="overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300 ease-in-out transform group-hover:-translate-y-1 bg-white">
                               <div className="relative h-40 sm:h-44"> 
@@ -324,7 +316,7 @@ export const HomePage = () => {
                                 </h3>
                                 <p className="text-sm text-gray-600 line-clamp-2 mb-2 sm:mb-3">{course.description}</p>
                                 <div className="flex justify-between items-center">
-                                  <p className="text-xs text-gray-500">{course.duration} дней</p>
+                                  <p className="text-xs text-gray-500">{course.duration} минут</p>
                                   <ArrowUpRight size={18} className="text-gray-400 group-hover:text-indigo-500 transition-colors" />
                                 </div>
                               </CardContent>

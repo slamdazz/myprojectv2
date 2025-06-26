@@ -16,8 +16,7 @@ interface OnboardingSlide {
 export const OnboardingScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
-  
-  // Эффект для запоминания, что пользователь уже видел онбординг
+
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
     if (hasSeenOnboarding === 'true') {
@@ -53,7 +52,7 @@ export const OnboardingScreen = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      // Запоминаем, что пользователь уже видел онбординг
+ 
       localStorage.setItem('hasSeenOnboarding', 'true');
       navigate('/login');
     }
@@ -85,7 +84,6 @@ export const OnboardingScreen = () => {
     })
   };
 
-  // Направление слайда (1 для вправо, -1 для влево)
   const [[page, direction], setPage] = useState([0, 0]);
 
   const paginate = (newDirection: number) => {

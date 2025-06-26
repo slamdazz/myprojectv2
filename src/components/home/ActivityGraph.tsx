@@ -28,7 +28,6 @@ export const ActivityGraph: React.FC<ActivityGraphProps> = ({
   lineColor = 'rgba(168, 85, 247, 1)',
   activeDay
 }) => {
-  // Подготовка данных для графика
   const chartData = data.map(item => ({
     label: item.day,
     value: item.minutes
@@ -53,7 +52,7 @@ export const ActivityGraph: React.FC<ActivityGraphProps> = ({
             showLabels={false}
           />
           
-          {/* Маркер активного дня */}
+ 
           {activeDay && (
             <div className="absolute bottom-0 top-0 flex items-center justify-center" 
                  style={{ 
@@ -70,7 +69,7 @@ export const ActivityGraph: React.FC<ActivityGraphProps> = ({
             </div>
           )}
           
-          {/* Дни недели */}
+    
           <div className="flex justify-between mt-2">
             {data.map((point, i) => (
               <div 

@@ -8,16 +8,16 @@ import { WaveBackground } from '../components/ui/WaveBackground';
 import { LineChart } from '../components/ui/LineChart';
 import { StatsCard } from '../components/profile/StatsCard';
 import { motion } from 'framer-motion';
-import { BarChart2, Award, Calendar, Clock, Medal, User, Heart, LogOut } from 'lucide-react'; // Импортируем LogOut
+import { BarChart2, Award, Calendar, Clock, Medal, User, Heart, LogOut } from 'lucide-react'; 
 import { getUserAchievements, getUserFavoriteCourses } from '../lib/supabase';
 import { CalorieTracker } from '../components/nutrition/CalorieTracker';
 import { Course } from '../types';
 import { getUserStats, getUserActivity, type ActivityData } from '../lib/stats';
-import { Link, useNavigate } from 'react-router-dom'; // Добавляем useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
 
 export const ProfilePage = () => {
-  const { user, updateProfile, logout } = useAuthStore(); // Добавляем logout
-  const navigate = useNavigate(); // Hook для навигации
+  const { user, updateProfile, logout } = useAuthStore(); 
+  const navigate = useNavigate(); 
   const [username, setUsername] = useState(user?.username || '');
   const [fullName, setFullName] = useState(user?.full_name || '');
   const [password, setPassword] = useState('');
@@ -42,26 +42,26 @@ export const ProfilePage = () => {
   });
   const [activityHistory, setActivityHistory] = useState<ActivityData[]>([]);
 
-  // Загрузка данных пользователя
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (!user) return;
       
       try {
-        // Загружаем статистику пользователя
+      
         const userStats = await getUserStats(user.id);
         setStats(userStats);
         
-        // Загружаем активность пользователя
+
         const activity = await getUserActivity(user.id);
         setActivityHistory(activity);
         
-        // Загружаем достижения пользователя
+   
         const { data: achievementsData, error: achievementsError } = await getUserAchievements(user.id);
         if (achievementsError) throw achievementsError;
         
         if (achievementsData) {
-          // Форматируем данные достижений
+    
           const formattedAchievements = achievementsData.map(item => ({
             id: item.achievement.id,
             title: item.achievement.title,
@@ -73,13 +73,13 @@ export const ProfilePage = () => {
           setAchievements(formattedAchievements);
         }
         
-        // Загружаем избранные курсы пользователя
+
         const { data: favoritesData, error: favoritesError } = await getUserFavoriteCourses(user.id);
         if (favoritesError) throw favoritesError;
 
         
         if (favoritesData) {
-          // Форматируем данные избранных курсов
+
           const formattedFavorites = favoritesData.map(item => item.courses).filter(Boolean) as Course[];
           setFavoriteCourses(formattedFavorites);
         }
@@ -91,13 +91,13 @@ export const ProfilePage = () => {
     fetchUserData();
   }, [user]);
   
-  // Преобразуем данные активности для графика
+
   const chartData = activityHistory.map(item => ({
     label: item.day,
     value: item.minutes
   }));
   
-  // Имитируем получение данных профиля
+
   useEffect(() => {
     if (user) {
       setUsername(user.username);
@@ -107,7 +107,7 @@ export const ProfilePage = () => {
       setHeight(user.height?.toString() || '');
       setGoal(user.goal || '');
     } else {
-      // Если пользователя нет (например, после выхода), перенаправляем на главную
+   
       navigate('/');
     }
   }, [user, navigate]);
@@ -124,8 +124,7 @@ export const ProfilePage = () => {
     
     try {
       setIsLoading(true);
-      
-      // Обновление профиля в Supabase
+
       await updateProfile({
         username,
         full_name: fullName,
@@ -134,11 +133,11 @@ export const ProfilePage = () => {
         goal
       });
       
-      // Сброс полей пароля
+ 
       setPassword('');
       setConfirmPassword('');
       
-      // Закрываем режим редактирования
+  
       setIsEditing(false);
       setMessage('Профиль успешно обновлен');
       
@@ -155,7 +154,7 @@ export const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/'); // Перенаправляем на главную страницу после выхода
+      navigate('/'); 
     } catch (error) {
       console.error("Ошибка при выходе из аккаунта:", error);
       setError("Не удалось выйти из аккаунта. Попробуйте снова.");
@@ -169,7 +168,7 @@ export const ProfilePage = () => {
     { id: 'nutrition', label: 'Питание', icon: <BarChart2 size={18} /> },
   ];
 
-  if (!user) { // Если пользователя нет, можно показать загрузчик или пустую страницу
+  if (!user) {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen">
@@ -182,7 +181,6 @@ export const ProfilePage = () => {
   return (
     <Layout>
       <div className="flex flex-col min-h-full">
-        {/* Градиентный хедер с аватаром пользователя */}
         <div className="relative">
           <div className="bg-gradient-to-br from-indigo-600 to-purple-700 pt-6 pb-20">
             <div className="relative z-10 px-4 text-center">
@@ -243,7 +241,6 @@ export const ProfilePage = () => {
           </div>
         </div>
         
-        {/* Вкладки */}
         <div className="bg-gray-50 -mt-16 rounded-t-3xl">
           <div className="flex overflow-x-auto pt-3 px-4 border-b border-gray-200 bg-white rounded-t-3xl">
             {tabItems.map((tab) => (
@@ -262,7 +259,6 @@ export const ProfilePage = () => {
             ))}
           </div>
 
-          {/* Контент вкладки */}
           <div className="px-4 pt-4 pb-16">
             {activeTab === 'profile' && (
               <>
@@ -382,7 +378,7 @@ export const ProfilePage = () => {
                     >
                       <StatsCard 
                         icon={<Award size={16} />}
-                        title="Трен-ки"
+                        title="Тренировки"
                         value={stats.totalWorkouts}
                         color="#3b82f6"
                         bgGradient="from-blue-50 to-indigo-50"
@@ -406,7 +402,7 @@ export const ProfilePage = () => {
                       
                       <StatsCard 
                         icon={<Medal size={16} />}
-                        title="Дост-ия"
+                        title="Достижения"
                         value={achievements.filter(a => a.unlocked).length}
                         progress={achievements.length > 0 ? (achievements.filter(a => a.unlocked).length / achievements.length * 100) : 0}
                         color="#8b5cf6"
@@ -414,31 +410,13 @@ export const ProfilePage = () => {
                       />
                     </motion.div>
                     
-                    {/* График активности */}
+ 
                     <motion.div 
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                       className="mb-6"
                     >
-                      <Card className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white">
-                        <CardHeader className="pb-0">
-                          <div className="flex justify-between items-center">
-                            <h2 className="text-lg font-semibold">Ваша активность</h2>
-                            <span className="text-xs text-white/70">За неделю</span>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <LineChart 
-                            data={chartData}
-                            height={160}
-                            gradientFrom="rgba(192, 132, 252, 0.6)"
-                            gradientTo="rgba(192, 132, 252, 0)"
-                            lineColor="rgba(255, 255, 255, 0.8)"
-                            pointColor="#fff"
-                          />
-                        </CardContent>
-                      </Card>
                     </motion.div>
                   </>
                 )}
@@ -609,7 +587,7 @@ export const ProfilePage = () => {
   );
 };
 
-// Вспомогательные функции для рекомендаций по питанию
+
 function getGoalName(goal: string): string {
   switch (goal) {
     case 'weight_loss': return 'снижение веса';
@@ -622,55 +600,54 @@ function getGoalName(goal: string): string {
 }
 
 function calculateRecommendedCalories(goal: string, weight: number, height: number): number {
-  // Базовый расчет BMR (основного обмена веществ) по формуле Миффлина-Сан Жеора
-  const baseBMR = 10 * weight + 6.25 * height - 5 * 30 + 5; // Предполагаем возраст 30 лет
+  const baseBMR = 10 * weight + 6.25 * height - 5 * 30 + 5; 
   
-  // Модификация в зависимости от цели
+
   switch (goal) {
     case 'weight_loss':
-      return Math.round(baseBMR * 1.2 - 500); // Дефицит для похудения
+      return Math.round(baseBMR * 1.2 - 500); 
     case 'muscle_gain':
-      return Math.round(baseBMR * 1.6 + 300); // Профицит для набора массы
+      return Math.round(baseBMR * 1.6 + 300); 
     case 'endurance':
-      return Math.round(baseBMR * 1.7); // Высокая активность
+      return Math.round(baseBMR * 1.7); 
     default:
-      return Math.round(baseBMR * 1.4); // Умеренная активность
+      return Math.round(baseBMR * 1.4); 
   }
 }
 
 function calculateRecommendedProtein(goal: string, weight: number): number {
   switch (goal) {
     case 'weight_loss':
-      return Math.round(weight * 2); // 2г на кг для сохранения мышц при похудении
+      return Math.round(weight * 2); 
     case 'muscle_gain':
-      return Math.round(weight * 2.2); // 2.2г на кг для набора мышц
+      return Math.round(weight * 2.2); 
     case 'endurance':
-      return Math.round(weight * 1.6); // 1.6г на кг для выносливости
+      return Math.round(weight * 1.6); 
     default:
-      return Math.round(weight * 1.2); // 1.2г на кг по умолчанию
+      return Math.round(weight * 1.2); 
   }
 }
 
 function calculateRecommendedCarbs(goal: string, weight: number): number {
   switch (goal) {
     case 'weight_loss':
-      return Math.round(weight * 2); // Низкоуглеводная диета
+      return Math.round(weight * 2);
     case 'muscle_gain':
-      return Math.round(weight * 5); // Высокоуглеводная диета
+      return Math.round(weight * 5); 
     case 'endurance':
-      return Math.round(weight * 6); // Очень высокое потребление углеводов
+      return Math.round(weight * 6); 
     default:
-      return Math.round(weight * 3); // Умеренное потребление
+      return Math.round(weight * 3); 
   }
 }
 
 function calculateRecommendedFats(goal: string, weight: number): number {
   switch (goal) {
     case 'weight_loss':
-      return Math.round(weight * 0.8); // Умеренное потребление жиров
+      return Math.round(weight * 0.8); 
     case 'muscle_gain':
-      return Math.round(weight * 1); // Нормальное потребление жиров
+      return Math.round(weight * 1); 
     default:
-      return Math.round(weight * 0.9); // Стандартное потребление
+      return Math.round(weight * 0.9); 
   }
 }

@@ -2,19 +2,16 @@ import { createClient, type User } from '@supabase/supabase-js';
 import { Database } from './database.types';
 import { NutritionLog } from '../types';
 
-// Переменные из .env файла
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 
-// Проверка наличия URL и ключа
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Ошибка: Отсутствуют переменные окружения для Supabase.');
 }
 
-// Создаем клиент Supabase с типизацией
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
-// Аутентификация: вход по email/паролю
 export async function signIn(email: string, password: string) {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -28,7 +25,6 @@ export async function signIn(email: string, password: string) {
   }
 }
 
-// Аутентификация: регистрация
 export async function signUp(email: string, password: string, username: string) {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -42,19 +38,17 @@ export async function signUp(email: string, password: string, username: string) 
   return { data, error };
 }
 
-// Аутентификация: выход
 export async function signOut() {
   const { error } = await supabase.auth.signOut();
   return { error };
 }
 
-// Аутентификация: получение текущего пользователя
 export async function getUser() {
   const { data: { user } } = await supabase.auth.getUser();
   return user;
 }
 
-// Аутентификация: вход через Google
+
 export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -65,7 +59,7 @@ export async function signInWithGoogle() {
   return { data, error };
 }
 
-// Аутентификация: сброс пароля
+
 export async function resetPassword(email: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${window.location.origin}/reset-password`,
@@ -73,7 +67,7 @@ export async function resetPassword(email: string) {
   return { error };
 }
 
-// Получение профиля пользователя
+
 export async function getUserProfile(userId: string) {
   try {
     const { data, error } = await supabase
@@ -84,7 +78,7 @@ export async function getUserProfile(userId: string) {
     
     return { data, error };
   } catch (err: any) {
-    // Обработка ошибки "нет строк"
+
     if (err.code === 'PGRST116') {
       return { data: null, error: null };
     }
@@ -92,7 +86,7 @@ export async function getUserProfile(userId: string) {
   }
 }
 
-// Обновление профиля пользователя
+
 export async function updateUserProfile(userId: string, updates: Partial<{
   username: string;
   full_name: string;
@@ -111,7 +105,7 @@ export async function updateUserProfile(userId: string, updates: Partial<{
   return { data, error };
 }
 
-// Получение курсов
+
 export async function getCourses() {
   const { data, error } = await supabase
     .from('courses')
@@ -121,7 +115,7 @@ export async function getCourses() {
   return { data, error };
 }
 
-// Получение курса по ID
+
 export async function getCourseById(courseId: string) {
   try {
     const { data, error } = await supabase
@@ -131,7 +125,7 @@ export async function getCourseById(courseId: string) {
       .single();
     
     if (error) {
-      // Проверяем, является ли ошибка "нет строк"
+      
       if (error.code === 'PGRST116') {
         return { data: null, error: null };
       }
@@ -140,7 +134,7 @@ export async function getCourseById(courseId: string) {
     
     return { data, error };
   } catch (err: any) {
-    // Обработка ошибки "нет строк"
+   
     if (err.code === 'PGRST116') {
       return { data: null, error: null };
     }
@@ -148,7 +142,7 @@ export async function getCourseById(courseId: string) {
   }
 }
 
-// Получение тренировки курса (теперь одна тренировка на курс)
+
 export async function getCourseWorkout(courseId: string) {
   try {
     const { data, error } = await supabase
@@ -164,7 +158,7 @@ export async function getCourseWorkout(courseId: string) {
   }
 }
 
-// Получение тренировки по ID
+
 export async function getWorkoutById(workoutId: string) {
   try {
     const { data, error } = await supabase
@@ -174,7 +168,7 @@ export async function getWorkoutById(workoutId: string) {
       .single();
     
     if (error) {
-      // Проверяем, является ли ошибка "нет строк"
+  
       if (error.code === 'PGRST116') {
         return { data: null, error: null };
       }
@@ -183,7 +177,7 @@ export async function getWorkoutById(workoutId: string) {
     
     return { data, error };
   } catch (err: any) {
-    // Обработка ошибки "нет строк"
+   
     if (err.code === 'PGRST116') {
       return { data: null, error: null };
     }
@@ -191,7 +185,6 @@ export async function getWorkoutById(workoutId: string) {
   }
 }
 
-// Получение упражнений тренировки
 export async function getWorkoutExercises(workoutId: string) {
   const { data, error } = await supabase
     .from('exercises')
@@ -202,9 +195,9 @@ export async function getWorkoutExercises(workoutId: string) {
   return { data, error };
 }
 
-// Запись пользователя на курс
+
 export async function enrollUserInCourse(userId: string, courseId: string) {
-  // Создаем запись в таблице user_courses
+
   const { error: enrollError } = await supabase
     .from('user_courses')
     .insert([
@@ -212,8 +205,7 @@ export async function enrollUserInCourse(userId: string, courseId: string) {
     ]);
   
   if (enrollError) return { error: enrollError };
-  
-  // Создаем запись в таблице user_progress
+
   const { error: progressError } = await supabase
     .from('user_progress')
     .insert([
@@ -227,7 +219,7 @@ export async function enrollUserInCourse(userId: string, courseId: string) {
   return { error: progressError };
 }
 
-// Получение прогресса пользователя по курсу
+
 export async function getUserCourseProgress(userId: string, courseId: string) {
   try {
     const { data, error } = await supabase
@@ -236,28 +228,26 @@ export async function getUserCourseProgress(userId: string, courseId: string) {
       .eq('user_id', userId)
       .eq('course_id', courseId);
     
-    // Если произошла ошибка при выполнении запроса
+
     if (error) {
       console.error('Error fetching user course progress:', error);
       return { data: null, error };
     }
     
-    // Если массив данных пуст (прогресс не найден)
     if (!data || data.length === 0) {
       return { data: null, error: null };
     }
     
-    // Если данные присутствуют, вернуть первый элемент массива
+ 
     return { data: data[0], error: null };
     
   } catch (err: any) {
-    // Обработка непредвиденных ошибок (например, сетевых или других исключений)
+
     console.error('Unexpected error in getUserCourseProgress:', err);
     return { data: null, error: err as Error };
   }
 }
 
-// Обновление прогресса пользователя
 export async function updateUserProgress(
   userId: string, 
   courseId: string, 
@@ -274,7 +264,6 @@ export async function updateUserProgress(
   return { data, error };
 }
 
-// Получение сообщений в чате курса
 export async function getChatMessages(courseId: string) {
   const { data, error } = await supabase
     .from('chat_messages')
@@ -291,7 +280,7 @@ export async function getChatMessages(courseId: string) {
 
   if (error) return { data: null, error };
   
-  // Получаем данные пользователей отдельно
+ 
   if (data && data.length > 0) {
     const userIds = [...new Set(data.map(msg => msg.user_id))];
     
@@ -302,7 +291,7 @@ export async function getChatMessages(courseId: string) {
     
     if (usersError) return { data: null, error: usersError };
     
-    // Соединяем данные
+
     const messagesWithUsers = data.map(message => ({
       ...message,
       users: usersData?.find(user => user.id === message.user_id) || {
@@ -319,7 +308,7 @@ export async function getChatMessages(courseId: string) {
   return { data: [], error: null };
 }
 
-// Отправка сообщения в чат
+
 export async function sendChatMessage(courseId: string, userId: string, content: string) {
   const { data, error } = await supabase
     .from('chat_messages')
@@ -338,7 +327,7 @@ export async function sendChatMessage(courseId: string, userId: string, content:
   
   if (error) return { data: null, error };
   
-  // Получаем данные пользователя отдельно
+  
   const { data: userData, error: userError } = await supabase
     .from('users')
     .select('id, username, avatar_url, role')
@@ -356,7 +345,7 @@ export async function sendChatMessage(courseId: string, userId: string, content:
   };
 }
 
-// Проверка, записан ли пользователь на курс
+
 export async function isUserEnrolledInCourse(userId: string, courseId: string) {
   try {
     const { data, error } = await supabase
@@ -367,7 +356,7 @@ export async function isUserEnrolledInCourse(userId: string, courseId: string) {
       .single();
     
     if (error) {
-      // Проверяем, является ли ошибка "нет строк"
+
       if (error.code === 'PGRST116') {
         return { isEnrolled: false, error: null };
       }
@@ -376,7 +365,7 @@ export async function isUserEnrolledInCourse(userId: string, courseId: string) {
     
     return { isEnrolled: !!data, error: null };
   } catch (err: any) {
-    // Обработка ошибки "нет строк" - пользователь не записан на курс
+    
     if (err.code === 'PGRST116') {
       return { isEnrolled: false, error: null };
     }
@@ -384,7 +373,7 @@ export async function isUserEnrolledInCourse(userId: string, courseId: string) {
   }
 }
 
-// Добавление курса в избранное
+
 export async function addCourseToFavorites(userId: string, courseId: string) {
   const { data, error } = await supabase
     .from('course_favorites')
@@ -397,7 +386,7 @@ export async function addCourseToFavorites(userId: string, courseId: string) {
   return { data, error };
 }
 
-// Удаление курса из избранного
+
 export async function removeCourseFromFavorites(userId: string, courseId: string) {
   const { data, error } = await supabase
     .from('course_favorites')
@@ -408,7 +397,7 @@ export async function removeCourseFromFavorites(userId: string, courseId: string
   return { data, error };
 }
 
-// Проверка, находится ли курс в избранном
+
 export async function isCourseFavorite(userId: string, courseId: string) {
   try {
     const { data, error } = await supabase
@@ -434,7 +423,7 @@ export async function isCourseFavorite(userId: string, courseId: string) {
   }
 }
 
-// Получение избранных курсов пользователя
+
 export async function getUserFavoriteCourses(userId: string) {
   const { data, error } = await supabase
     .from('course_favorites')
@@ -463,7 +452,7 @@ export async function getUserFavoriteCourses(userId: string) {
   return { data: favoritesWithCourses, error: null };
 }
 
-// Добавление записи о питании
+
 export async function addNutritionLog(userId: string, nutritionData: Omit<NutritionLog, 'id' | 'user_id' | 'created_at' | 'updated_at'>) {
   const { data, error } = await supabase
     .from('nutrition_logs')
@@ -485,7 +474,7 @@ export async function addNutritionLog(userId: string, nutritionData: Omit<Nutrit
   return { data, error };
 }
 
-// Получение записей о питании пользователя
+
 export async function getUserNutritionLogs(userId: string, date?: string) {
   let query = supabase
     .from('nutrition_logs')
@@ -501,7 +490,6 @@ export async function getUserNutritionLogs(userId: string, date?: string) {
   return { data, error };
 }
 
-// Получение достижений пользователя
 export async function getUserAchievements(userId: string) {
   const { data, error } = await supabase
     .from('user_achievements')
@@ -530,7 +518,6 @@ export async function getUserAchievements(userId: string) {
   return { data: userAchievementsWithDetails, error: null };
 }
 
-// Получение количества записанных пользователей на курс
 export async function getCourseEnrollmentCount(courseId: string) {
   const { count, error } = await supabase
     .from('user_courses')

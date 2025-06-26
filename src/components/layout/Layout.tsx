@@ -12,7 +12,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, fullScreen = false }) 
   const { isAuthenticated } = useAuthStore();
   const [viewportHeight, setViewportHeight] = useState('100vh');
   
-  // Устанавливаем корректную высоту для мобильных устройств
   useEffect(() => {
     const setHeight = () => {
       const vh = window.innerHeight * 0.01;

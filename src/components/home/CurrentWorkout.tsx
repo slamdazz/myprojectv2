@@ -20,27 +20,44 @@ interface CurrentWorkoutProps {
 export const CurrentWorkout: React.FC<CurrentWorkoutProps> = ({ workout }) => {
   if (!workout) {
     return (
-      <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white overflow-hidden hover:shadow-md transition-shadow duration-300">
-        <CardContent className="p-5">
-          <div className="text-center py-6">
-            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg\" className="h-8 w-8\" fill="none\" viewBox="0 0 24 24\" stroke="currentColor">
-                <path strokeLinecap="round\" strokeLinejoin="round\" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Нет активных тренировок</h3>
-            <p className="text-white/80 mb-4">
-              Выберите курс, чтобы начать заниматься
-            </p>
-            <Link to="/courses">
-              <Button variant="gradient" className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm border border-white/20">
-                Выбрать курс
-              </Button>
-            </Link>
+       
+    <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white overflow-hidden hover:shadow-md transition-shadow duration-300">
+      <CardContent className="p-5">
+        <div className="text-center py-6">
+          {/* Центрированный икон-блок */}
+          <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
           </div>
-        </CardContent>
-      </Card>
-    );
+
+          <h3 className="text-lg font-semibold mb-2">Нет активных тренировок</h3>
+          <p className="text-white/80 mb-4">
+            Выберите курс, чтобы начать заниматься
+          </p>
+          <Link to="/courses">
+            <Button
+              variant="gradient"
+              className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm border border-white/20"
+            >
+              Выбрать курс
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+    )
   }
   
   return (

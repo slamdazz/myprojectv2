@@ -34,12 +34,11 @@ export const MobileNavbar: React.FC = () => {
   const navItems = [
     { path: '/', icon: Home, label: 'Главная' },
     { path: '/courses', icon: BookOpen, label: 'Курсы' },
-    { path: null, icon: null, label: null }, // Пустой элемент для центральной кнопки
+    { path: null, icon: null, label: null }, 
     { path: '/chat', icon: MessageCircle, label: 'Чат' },
     { path: '/profile', icon: User, label: 'Профиль' }
   ];
 
-  // Мотивационные фразы с позитивной окраской
   const motivationalQuotes = [
     "Каждый день - новая победа! 💪",
     "Твоя сила растет с каждой тренировкой! 🔥",
@@ -48,10 +47,8 @@ export const MobileNavbar: React.FC = () => {
     "Ты можешь больше, чем думаешь! 💎"
   ];
 
-  // Случайная мотивационная фраза
   const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
 
-  // Загрузка реальных данных при открытии окна достижений
   const handleOpenQuickStats = async () => {
     if (!user) return;
     
@@ -59,15 +56,14 @@ export const MobileNavbar: React.FC = () => {
     setIsLoadingStats(true);
     
     try {
-      // Загружаем статистику пользователя
+  
       const stats = await getUserStats(user.id);
-      
-      // Загружаем достижения пользователя
+     
       const { data: achievementsData, error } = await getUserAchievements(user.id);
       
       if (error) throw error;
       
-      // Форматируем достижения (берем первые 3)
+
       const formattedAchievements = achievementsData?.slice(0, 3).map(item => ({
         id: item.achievement.id,
         title: item.achievement.title,
@@ -83,7 +79,7 @@ export const MobileNavbar: React.FC = () => {
       
     } catch (error) {
       console.error('Ошибка при загрузке данных:', error);
-      // Устанавливаем пустые данные в случае ошибки
+   
       setQuickStats({
         streak: 0,
         totalWorkouts: 0,
@@ -137,8 +133,8 @@ export const MobileNavbar: React.FC = () => {
           </React.Fragment>
         ))}
       </div>
+      {}
 
-      {/* Кнопки администрирования для мобильных устройств */}
       {(isAdmin || isModerator) && (
         <div className="fixed bottom-20 right-4 z-20 md:hidden">
           <div className="flex flex-col gap-2">
@@ -170,7 +166,7 @@ export const MobileNavbar: React.FC = () => {
         </div>
       )}
 
-      {/* Всплывающее окно быстрого просмотра достижений */}
+      {}
       <AnimatePresence>
         {quickStatsOpen && (
           <>

@@ -24,7 +24,6 @@ export const CourseList: React.FC<CourseListProps> = ({
   const [enrolledUsers, setEnrolledUsers] = useState<Record<string, number>>({});
   const { user } = useAuthStore();
   
-  // Получение избранных курсов пользователя
   useEffect(() => {
     if (!user) return;
     
@@ -42,7 +41,7 @@ export const CourseList: React.FC<CourseListProps> = ({
     fetchFavorites();
   }, [courses, user]);
   
-  // Получение реального количества записанных пользователей
+
   useEffect(() => {
     const fetchEnrollmentCounts = async () => {
       const enrollmentCounts: Record<string, number> = {};
@@ -58,16 +57,14 @@ export const CourseList: React.FC<CourseListProps> = ({
     fetchEnrollmentCounts();
   }, [courses]);
   
-  // Фильтрация курсов
+
   const filteredCourses = courses.filter(course => {
-    // Поиск по названию и описанию
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         course.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    // Фильтр по уровню сложности
+
     const matchesLevel = filterLevel === '' || course.level === filterLevel;
     
-    // Фильтр по продолжительности
+
     let matchesDuration = true;
     if (filterDuration === 'short') {
       matchesDuration = course.duration <= 7;
@@ -79,18 +76,17 @@ export const CourseList: React.FC<CourseListProps> = ({
     
     return matchesSearch && matchesLevel && matchesDuration;
   });
-  
-  // Обработчик добавления/удаления из избранного
+
   const handleToggleFavorite = async (courseId: string) => {
     if (!user) return;
     
     try {
       if (favoriteCourses[courseId]) {
-        // Удаляем из избранного
+
         await removeCourseFromFavorites(user.id, courseId);
         setFavoriteCourses({ ...favoriteCourses, [courseId]: false });
       } else {
-        // Добавляем в избранное
+
         await addCourseToFavorites(user.id, courseId);
         setFavoriteCourses({ ...favoriteCourses, [courseId]: true });
       }

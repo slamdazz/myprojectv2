@@ -20,7 +20,7 @@ export const CoursesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // Анимация для компонентов
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -36,7 +36,7 @@ export const CoursesPage = () => {
     show: { y: 0, opacity: 1 }
   };
   
-  // Загрузка курсов из Supabase
+
   useEffect(() => {
     const fetchCourses = async () => {
       setIsLoading(true);
@@ -61,17 +61,15 @@ export const CoursesPage = () => {
     fetchCourses();
   }, []);
   
-  // Фильтрация курсов
+
   useEffect(() => {
     const filtered = courses.filter(course => {
-      // Поиск по названию и описанию
       const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          course.description.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // Фильтр по уровню сложности
+
       const matchesLevel = filterLevel === '' || course.level === filterLevel;
       
-      // Фильтр по продолжительности
+
       let matchesDuration = true;
       if (filterDuration === 'short') {
         matchesDuration = course.duration <= 7;
@@ -113,27 +111,20 @@ export const CoursesPage = () => {
     }
   };
   
-  // Стили для select, чтобы текст в option был видимым
-  // Это хак, и он может не работать во всех браузерах одинаково идеально для option
-  // Но он попытается установить цвет текста для самого select
+
   const selectStyles: React.CSSProperties = {
-    color: 'black', // Основной цвет текста для выбранного значения
-    backgroundColor: 'rgba(255, 255, 255, 0.15)', // Немного более непрозрачный фон
-    WebkitAppearance: 'none', // Убираем стандартную стрелку в Webkit
-    MozAppearance: 'none', // Убираем стандартную стрелку в Mozilla
-    appearance: 'none', // Убираем стандартную стрелку
-    paddingRight: '2.5rem', // Место для кастомной стрелки
+    color: 'black', 
+    backgroundColor: 'rgba(255, 255, 255, 0.15)', 
+    WebkitAppearance: 'none', 
+    MozAppearance: 'none', 
+    appearance: 'none', 
+    paddingRight: '2.5rem', 
     backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right 0.75rem center',
     backgroundSize: '1.25em 1.25em',
   };
 
-  // Для <option> элементов, к сожалению, прямой контроль цвета текста через CSS ограничен.
-  // Одно из решений - это использовать кастомный компонент select.
-  // В данном случае, мы оставим белый цвет текста для <select>, но сделаем фон чуть менее прозрачным.
-  // А для <option> браузеры обычно используют системные цвета, если не указано иное.
-  // Попробуем для <option> также установить цвет, но результат может варьироваться.
 
   return (
     <Layout>
@@ -193,18 +184,17 @@ export const CoursesPage = () => {
                           <select
                             value={filterLevel}
                             onChange={(e) => setFilterLevel(e.target.value)}
-                            // Применяем стили через Tailwind классы + инлайн стили для специфичных вещей
+                          
                             className="block w-full rounded-lg border-white/20 text-white placeholder-white/60 py-2.5 px-3 focus:ring-indigo-500 focus:border-indigo-500 appearance-none"
                             style={selectStyles}
                           >
-                            {/* Для option цвет текста будет зависеть от браузера, 
-                                но мы можем стилизовать их фон, если они внутри select с темным фоном */}
+                    
                             <option value="" style={{ color: 'black', backgroundColor: 'white' }}>Все уровни</option>
                             <option value="beginner" style={{ color: 'black', backgroundColor: 'white' }}>Начинающий</option>
                             <option value="intermediate" style={{ color: 'black', backgroundColor: 'white' }}>Средний</option>
                             <option value="advanced" style={{ color: 'black', backgroundColor: 'white' }}>Продвинутый</option>
                           </select>
-                          {/* Убрал иконку ChevronDown отсюда, так как она теперь встроена через background-image */}
+                        
                         </div>
                       </div>
                       
@@ -226,7 +216,7 @@ export const CoursesPage = () => {
                       </div>
                     </div>
                     
-                    <div className="mt-6 flex justify-end space-x-2"> {/* Увеличил отступ сверху */}
+                    <div className="mt-6 flex justify-end space-x-2"> 
                       <Button
                         variant="ghost"
                         size="sm"
@@ -234,14 +224,14 @@ export const CoursesPage = () => {
                           setFilterLevel('');
                           setFilterDuration('');
                         }}
-                        className="text-white/80 hover:text-white hover:bg-white/15" // Чуть изменил hover
+                        className="text-white/80 hover:text-white hover:bg-white/15" 
                       >
                         Сбросить
                       </Button>
                       <Button
                         size="sm"
                         onClick={() => setShowFilters(false)}
-                        className="bg-white/20 text-white hover:bg-white/30" // Чуть изменил hover
+                        className="bg-white/20 text-white hover:bg-white/30" 
                       >
                         Применить
                       </Button>
@@ -259,7 +249,7 @@ export const CoursesPage = () => {
           </div>
         </div>
         
-        {/* Основной контент */}
+
         <div className="flex-1 bg-gray-50 -mt-6 rounded-t-3xl px-4 pt-4 pb-16">
           {isLoading ? (
             <div className="flex justify-center items-center py-12">
@@ -298,7 +288,7 @@ export const CoursesPage = () => {
                 <motion.div 
                   key={course.id} 
                   variants={item}
-                  custom={index} // убедитесь, что это свойство используется, если оно нужно для анимации
+                  custom={index} 
                 >
                   <Link to={`/courses/${course.id}`} className="block">
                     <Card className="overflow-hidden active:scale-98 transition-transform duration-200 ease-in-out hover:shadow-xl">
@@ -321,13 +311,10 @@ export const CoursesPage = () => {
                         <div className="flex items-center justify-between text-sm text-gray-500">
                           <div className="flex items-center">
                             <Clock size={16} className="mr-1 text-indigo-500" />
-                            <span>{course.duration} дней</span>
+                            <span>{course.duration} минут</span>
                           </div>
                           
-                          <div className="flex items-center">
-                            <Users size={16} className="mr-1 text-indigo-500" />
-                            <span>{course.ratings_count ?? 0}</span>
-                          </div>
+                      
                           
                           <ArrowUpRight size={18} className="text-indigo-500" />
                         </div>

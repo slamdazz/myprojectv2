@@ -8,7 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 export const ForgotPasswordPage = () => {
   const { isAuthenticated } = useAuthStore();
   
-  // Если пользователь уже авторизован, перенаправляем на главную страницу
+
   if (isAuthenticated) {
     return <Navigate to="/" />;
   }

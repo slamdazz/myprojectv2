@@ -25,7 +25,7 @@ export const CourseDetailPage = () => {
   
   const { user } = useAuthStore();
   
-  // Анимация для компонентов
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -49,7 +49,7 @@ export const CourseDetailPage = () => {
       setError(null);
       
       try {
-        // Получаем данные курса
+       
         const { data: courseData, error: courseError } = await getCourseById(id);
         
         if (courseError) {
@@ -65,22 +65,21 @@ export const CourseDetailPage = () => {
           return;
         }
         
-        // Получаем тренировку курса
+      
         const { data: workoutData, error: workoutError } = await getCourseWorkout(id);
         
         if (workoutError) {
           console.error('Ошибка при получении тренировки:', workoutError);
-          // Не показываем ошибку, если просто нет тренировки
+          
         }
-        
-        // Проверяем, записан ли пользователь на курс
+       
         const { isEnrolled: userEnrolled, error: enrolledError } = await isUserEnrolledInCourse(user.id, id);
         
         if (enrolledError && enrolledError.code !== 'PGRST116') {
           console.error('Ошибка при проверке записи на курс:', enrolledError);
         }
         
-        // Если пользователь записан на курс, получаем его прогресс
+     
         let progressData = null;
         if (userEnrolled) {
           const { data: progress, error: progressError } = await getUserCourseProgress(user.id, id);
@@ -92,11 +91,11 @@ export const CourseDetailPage = () => {
           }
         }
 
-        // Проверяем, добавлен ли курс в избранное
+      
         const { isFavorite: userFavorite } = await isCourseFavorite(user.id, id);
         setIsFavorite(userFavorite);
         
-        // Устанавливаем данные в state
+     
         setCourse(courseData);
         setWorkout(workoutData);
         setUserProgress(progressData);
@@ -123,7 +122,7 @@ export const CourseDetailPage = () => {
       }
       
       setIsEnrolled(true);
-      // Обновляем данные о прогрессе
+    
       const { data, error: progressError } = await getUserCourseProgress(user.id, id);
       if (progressError && progressError.code !== 'PGRST116') {
         console.error('Ошибка при получении прогресса:', progressError);
@@ -135,7 +134,7 @@ export const CourseDetailPage = () => {
     }
   };
 
-  // Функция для добавления/удаления курса из избранного
+ 
   const handleToggleFavorite = async () => {
     if (!user || !id) return;
 
@@ -152,7 +151,7 @@ export const CourseDetailPage = () => {
     }
   };
   
-  // Функция для отображения уровня сложности на русском
+ 
   const getLevelName = (level: string) => {
     switch (level) {
       case 'beginner':
@@ -166,7 +165,6 @@ export const CourseDetailPage = () => {
     }
   };
   
-  // Функция для отображения цвета уровня сложности
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':
@@ -228,7 +226,7 @@ export const CourseDetailPage = () => {
   return (
     <Layout>
       <div className="flex flex-col min-h-full">
-        {/* Шапка курса */}
+
         <div className="relative">
           <div className="relative">
             <div className="h-56 bg-gradient-to-br from-indigo-600 to-purple-700">
@@ -267,10 +265,9 @@ export const CourseDetailPage = () => {
             </div>
           </div>
         </div>
-        
-        {/* Основной контент */}
+
         <div className="flex-1 bg-gray-50 px-4 pt-6 pb-24">
-          {/* Кнопка записаться/продолжить */}
+   
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -307,18 +304,25 @@ export const CourseDetailPage = () => {
                   </div>
                 </div>
                 
-                {workout && !userProgress?.completed && (
-                  <Link to={`/workout/${workout.id}`}>
-                    <Button 
-                      fullWidth
-                      variant="gradient"
-                      className="bg-gradient-to-r from-indigo-500 to-purple-600"
-                    >
-                      <Play size={16} className="mr-2" />
-                      Начать тренировку
-                    </Button>
-                  </Link>
-                )}
+                {isEnrolled ? (
+                    workout && !userProgress?.completed ? (
+                      <Link to={`/workout/${workout.id}`}>
+                        <Button 
+                          fullWidth
+                          variant="gradient"
+                          className="bg-gradient-to-r from-indigo-500 to-purple-600"
+                        >
+                          <Play size={16} className="mr-2" />
+                          Начать тренировку
+                        </Button>
+                      </Link>
+                    ) : null
+                  ) : (
+                    <p className="text-center text-red-600 font-medium">
+                      Чтобы начать тренировку, пожалуйста, запишитесь на курс.
+                    </p>
+                  )}
+
                 
                 {userProgress?.completed && (
                   <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200">
@@ -331,7 +335,7 @@ export const CourseDetailPage = () => {
             )}
           </motion.div>
           
-          {/* Вкладки */}
+
           <div className="mb-4 border-b border-gray-200">
             <div className="flex overflow-x-auto">
               <button
@@ -348,8 +352,7 @@ export const CourseDetailPage = () => {
               </button>
             </div>
           </div>
-          
-          {/* Контент вкладок */}
+ 
           <div>
             {activeTab === 'program' && (
               <motion.div 

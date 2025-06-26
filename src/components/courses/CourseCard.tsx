@@ -17,7 +17,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   isFavorite = false,
   onToggleFavorite
 }) => {
-  // Определение цвета метки в зависимости от уровня сложности
+
   const getLevelColor = () => {
     switch (course.level) {
       case 'beginner':
@@ -30,8 +30,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
         return 'bg-gray-100 text-gray-800';
     }
   };
-  
-  // Перевод уровня сложности на русский
+
   const getLevelName = () => {
     switch (course.level) {
       case 'beginner':
@@ -45,7 +44,6 @@ export const CourseCard: React.FC<CourseCardProps> = ({
     }
   };
 
-  // Предотвращаем переход при клике на кнопку избранного
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();

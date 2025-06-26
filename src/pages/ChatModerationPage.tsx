@@ -10,7 +10,7 @@ import { supabase, getCourses } from '../lib/supabase';
 import { useToast } from '../lib/ToastContext';
 import { ConfirmationModal } from '../components/ui/ConfirmationModal';
 
-// Helper to ensure role is of type UserRole
+
 const toUserRole = (role: string | null): UserRole => {
   if (role === 'admin' || role === 'moderator' || role === 'user') {
     return role;
@@ -34,7 +34,7 @@ export const ChatModerationPage = () => {
   const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   
-  // Проверяем, имеет ли пользователь доступ к этой странице
+
   if (!user || (user.role !== 'admin' && user.role !== 'moderator')) {
     return <Navigate to="/" />;
   }
@@ -44,7 +44,7 @@ export const ChatModerationPage = () => {
       setIsLoading(true);
       setError(null);
       try {
-        // Получаем список курсов
+  
         const { data: coursesData, error: coursesError } = await getCourses();
         if (coursesError) throw coursesError;
         
@@ -56,7 +56,7 @@ export const ChatModerationPage = () => {
           setCourses(formattedCourses);
         }
         
-        // Получаем все сообщения из чата для модерации
+
         const { data: messagesData, error: messagesError } = await supabase
           .from('chat_messages')
           .select(`
@@ -73,7 +73,7 @@ export const ChatModerationPage = () => {
         if (messagesError) throw messagesError;
         
         if (messagesData) {
-          // Преобразуем данные в формат ChatMessage
+ 
           const formattedMessages = messagesData.map(message => {
             return {
               id: message.id,
@@ -107,18 +107,17 @@ export const ChatModerationPage = () => {
     fetchData();
   }, []);
   
-  // Фильтрация сообщений при изменении параметров поиска или фильтров
+  
   useEffect(() => {
     const filtered = messages.filter(message => {
-      // Фильтр по поиску (содержимое сообщения или имя пользователя)
+   
       const matchesSearch = 
         message.content.toLowerCase().includes(searchTerm.toLowerCase()) || 
         message.user.username.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // Фильтр по курсу
+  
       const matchesCourse = filterCourse === '' || message.course_id === filterCourse;
       
-      // Фильтр по статусу модерации
+   
       const matchesStatus = filterStatus === '' || 
         (filterStatus === 'moderated' && message.is_moderated) ||
         (filterStatus === 'pending' && !message.is_moderated);
@@ -128,14 +127,12 @@ export const ChatModerationPage = () => {
     
     setFilteredMessages(filtered);
   }, [messages, searchTerm, filterCourse, filterStatus]);
-  
-  // Форматирование даты сообщения
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString('ru-RU');
   };
-  
-  // Обработчики модерации
+
   const approveMessage = async (id: string) => {
     try {
       const { error } = await supabase

@@ -20,7 +20,7 @@ export const WorkoutDetailPage = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isComplete, setIsComplete] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [timeLeft, setTimeLeft] = useState<number>(0); // время в секундах
+  const [timeLeft, setTimeLeft] = useState<number>(0); 
   const [progress, setProgress] = useState<number>(0);
   
   useEffect(() => {
@@ -30,11 +30,11 @@ export const WorkoutDetailPage = () => {
       setIsLoading(true);
       
       try {
-        // Получаем данные тренировки
+
         const { data: workoutData, error: workoutError } = await getWorkoutById(id);
         if (workoutError) throw workoutError;
         
-        // Получаем упражнения тренировки
+   
         const { data: exercisesData, error: exercisesError } = await getWorkoutExercises(id);
         if (exercisesError) throw exercisesError;
         
@@ -46,7 +46,7 @@ export const WorkoutDetailPage = () => {
           setExercises(exercisesData);
           setTimeLeft(exercisesData[0].rest);
         } else {
-          // Демонстрационные данные, если в базе нет упражнений
+        
           const mockExercises: Exercise[] = [
             {
               id: '1',
@@ -124,7 +124,7 @@ export const WorkoutDetailPage = () => {
     fetchWorkoutData();
   }, [id]);
   
-  // Обработчик таймера
+
   useEffect(() => {
     let timer: number | null = null;
     
@@ -132,7 +132,7 @@ export const WorkoutDetailPage = () => {
       timer = window.setInterval(() => {
         setTimeLeft(prev => {
           const newValue = prev - 1;
-          // Обновляем прогресс
+       
           if (exercises[currentExercise]) {
             setProgress(Math.round((1 - newValue / exercises[currentExercise].rest) * 100));
           }
@@ -140,16 +140,14 @@ export const WorkoutDetailPage = () => {
         });
       }, 1000);
     } else if (isPlaying && timeLeft === 0) {
-      // Если время вышло, но тренировка активна
+  
       if (currentExercise < exercises.length - 1) {
-        // Переходим к следующему упражнению
         setCurrentExercise(prev => prev + 1);
-        // Устанавливаем новое время отдыха
         if (exercises[currentExercise + 1]) {
           setTimeLeft(exercises[currentExercise + 1].rest);
         }
       } else {
-        // Если это было последнее упражнение
+  
         setIsPlaying(false);
         setIsComplete(true);
       }
@@ -160,14 +158,14 @@ export const WorkoutDetailPage = () => {
     };
   }, [isPlaying, timeLeft, currentExercise, exercises]);
   
-  // Форматирование времени
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
   
-  // Обработчики кнопок управления
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
@@ -199,17 +197,15 @@ export const WorkoutDetailPage = () => {
     setProgress(0);
   };
   
-  // Обработчик завершения тренировки
   const handleComplete = async () => {
     if (!user || !workout) return;
     
     try {
       setIsComplete(true);
       
-      // Обновляем прогресс пользователя - помечаем курс как завершенный
       await updateUserProgress(user.id, workout.course_id, { completed: true });
       
-      // Имитация сохранения прогресса
+
       await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Ошибка при сохранении прогресса:', error);
@@ -311,27 +307,28 @@ export const WorkoutDetailPage = () => {
                   </motion.div>
                   
                   <motion.div 
-                    className="space-y-3"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
+                  className="space-y-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <Button 
+                    onClick={() => navigate(`/courses/${workout.course_id}`)} 
+                    variant="outline" 
+                    fullWidth
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/10 hover:border-white/20 hover:text-white"
                   >
-                    <Button 
-                      onClick={() => navigate(`/courses/${workout.course_id}`)} 
-                      variant="outline" 
-                      fullWidth
-                      className="bg-white/10 border-white/20 text-white"
-                    >
-                      Вернуться к курсу
-                    </Button>
-                    <Button 
-                      onClick={resetWorkout} 
-                      fullWidth
-                      className="bg-white text-indigo-600"
-                    >
-                      Повторить тренировку
-                    </Button>
-                  </motion.div>
+                    Вернуться к курсу
+                  </Button>
+                  <Button 
+                    onClick={resetWorkout} 
+                    fullWidth
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/10 hover:border-white/20 hover:text-white"
+                  >
+                    Повторить тренировку
+                  </Button>
+                </motion.div>
+
                 </CardContent>
               </Card>
             </motion.div>
@@ -342,7 +339,7 @@ export const WorkoutDetailPage = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {/* Хедер тренировки */}
+  
               <div className="p-4 pb-0">
                 <div className="flex items-center mb-4">
                   <button 
@@ -362,7 +359,7 @@ export const WorkoutDetailPage = () => {
                 <p className="text-gray-600 mb-4">{workout.description}</p>
               </div>
               
-              {/* Текущее упражнение */}
+    
               <div className="px-4">
                 <motion.div 
                   initial={{ y: 20, opacity: 0 }}
@@ -441,7 +438,7 @@ export const WorkoutDetailPage = () => {
                   </Card>
                 </motion.div>
                 
-                {/* Список упражнений */}
+     
                 <motion.div 
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}

@@ -1,16 +1,12 @@
-/**
- * Генерирует текстовую CAPTCHA для защиты от ботов
- */
+
 export function generateCaptcha(length = 6): { text: string; dataURL: string } {
-  // Создаем случайный текст
   const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
   let result = '';
   
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
-  
-  // Создаем canvas для генерации изображения
+
   const canvas = document.createElement('canvas');
   canvas.width = 200;
   canvas.height = 50;
@@ -35,7 +31,7 @@ export function generateCaptcha(length = 6): { text: string; dataURL: string } {
     );
   }
   
-  // Линии для шума
+
   for (let i = 0; i < 4; i++) {
     ctx.strokeStyle = `rgba(0, 0, 0, ${Math.random() * 0.2})`;
     ctx.beginPath();
@@ -49,9 +45,9 @@ export function generateCaptcha(length = 6): { text: string; dataURL: string } {
   const fonts = ['bold 24px Arial', 'bold 24px Verdana', 'bold 24px Tahoma'];
   
   let x = 20;
-  const letterSpacing = 140 / length; // равномерно распределяем буквы
+  const letterSpacing = 140 / length; 
   
-  // Рисуем каждый символ отдельно с разным стилем
+
   for (let i = 0; i < result.length; i++) {
     const character = result.charAt(i);
     const colorIndex = Math.floor(Math.random() * textColors.length);
@@ -59,8 +55,7 @@ export function generateCaptcha(length = 6): { text: string; dataURL: string } {
     
     ctx.fillStyle = textColors[colorIndex];
     ctx.font = fonts[fontIndex];
-    
-    // Случайный угол наклона
+
     const angle = (Math.random() - 0.5) * 0.4;
     ctx.save();
     ctx.translate(x, 30);
@@ -71,7 +66,7 @@ export function generateCaptcha(length = 6): { text: string; dataURL: string } {
     x += letterSpacing;
   }
   
-  // Дополнительные линии поверх текста для усложнения распознавания
+ 
   for (let i = 0; i < 2; i++) {
     ctx.strokeStyle = `rgba(0, 0, 0, ${Math.random() * 0.15})`;
     ctx.beginPath();

@@ -27,8 +27,7 @@ export const AdminUsersPage = () => {
   const [userToDelete, setUserToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { addToast } = useToast();
-  
-  // Проверяем, имеет ли пользователь доступ к этой странице
+
   if (!currentUser || currentUser.role !== 'admin') {
     return <Navigate to="/" />;
   }
@@ -63,20 +62,16 @@ export const AdminUsersPage = () => {
     
     fetchUsers();
   }, []);
-  
-  // Фильтрация пользователей при изменении параметров поиска или фильтров
+
   useEffect(() => {
     const filtered = users.filter(user => {
-      // Фильтр по поиску (имя или email)
+
       const matchesSearch = 
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) || 
         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      // Фильтр по роли
+
       const matchesRole = filterRole === '' || user.role === filterRole;
-      
-      // Здесь может быть фильтр по статусу (активен/заблокирован)
-      // Для демонстрации все пользователи активны
+
       const matchesStatus = filterStatus === '' || (filterStatus === 'active');
       
       return matchesSearch && matchesRole && matchesStatus;
@@ -132,13 +127,12 @@ export const AdminUsersPage = () => {
     addToast('Информация о пользователе успешно обновлена.', 'success');
   };
   
-  // Форматирование даты регистрации
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU');
   };
-  
-  // Получение названия роли на русском
+
   const getRoleName = (role: UserRole) => {
     switch (role) {
       case 'admin':
@@ -151,8 +145,7 @@ export const AdminUsersPage = () => {
         return 'Неизвестно';
     }
   };
-  
-  // Получение цвета фона для роли
+
   const getRoleColor = (role: UserRole) => {
     switch (role) {
       case 'admin':

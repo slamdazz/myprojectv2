@@ -165,17 +165,17 @@ export const ChatPage = () => {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right 0.75rem center',
     backgroundSize: '1.25em 1.25em',
-    // Стили для темной темы селекта
-    backgroundColor: 'rgba(255, 255, 255, 0.05)', // Очень прозрачный белый для темного фона
-    color: 'white', // Белый текст
-    borderColor: 'rgba(255, 255, 255, 0.2)', // Полупрозрачная белая рамка
+
+    backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+    color: 'black', 
+    borderColor: 'rgba(255, 255, 255, 0.2)', 
   };
   
   return (
     <Layout>
-      {/* Используем градиентный фон для всей страницы */}
+      {}
       <div className="flex flex-col h-screen bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-700 text-white">
-        {/* Шапка */}
+        {}
         <div className="p-4 sm:p-6 pb-3 bg-white/5 backdrop-blur-md shadow-lg border-b border-white/10">
           <div className="mb-3">
             <h1 className="text-2xl font-bold mb-1">Чаты курсов</h1>
@@ -220,8 +220,7 @@ export const ChatPage = () => {
                     <option value="" disabled style={{ color: 'gray', backgroundColor: 'white' }}>-- Выберите курс --</option>
                 )}
                 {courses.map((course) => (
-                  // Опции должны быть светлыми на темном фоне, но браузеры могут переопределять это.
-                  // Этот стиль - попытка улучшить читаемость.
+               
                   <option key={course.id} value={course.id} style={{ color: 'black', backgroundColor: 'white' }}>
                     {course.title}
                   </option>
@@ -231,7 +230,7 @@ export const ChatPage = () => {
           </div>
         </div>
         
-        {/* Основной контент чата */}
+        {}
         <div className="flex-1 p-4 sm:p-6 pt-3 overflow-y-auto">
           {isLoadingCourses && !activeCourseId ? (
              <div className="flex flex-col items-center justify-center h-full text-center">
@@ -276,8 +275,7 @@ export const ChatPage = () => {
               messages={messages}
               onSendMessage={handleSendMessage}
               isLoading={isLoadingMessages}
-              // Передаем темную тему для ChatBox, если он ее поддерживает
-              // theme="dark" 
+            
             />
           )}
         </div>
